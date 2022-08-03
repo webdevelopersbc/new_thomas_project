@@ -1,26 +1,287 @@
-html,
-body {
-  padding: 0;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "semantic-ui-css/semantic.min.css";
+@import "flatpickr/dist/themes/light.css";
+@import "@syncfusion/ej2-base/styles/material.css";
+@import "@syncfusion/ej2-buttons/styles/material.css";
+@import "@syncfusion/ej2-calendars/styles/material.css";
+@import "@syncfusion/ej2-dropdowns/styles/material.css";
+@import "@syncfusion/ej2-inputs/styles/material.css";
+@import "@syncfusion/ej2-lists/styles/material.css";
+@import "@syncfusion/ej2-navigations/styles/material.css";
+@import "@syncfusion/ej2-popups/styles/material.css";
+@import "@syncfusion/ej2-splitbuttons/styles/material.css";
+@import "@syncfusion/ej2-react-schedule/styles/material.css";
+
+/* background gradient for buttons / lines */
+.gradient-bg {
+  background: linear-gradient(
+    to right,
+    #fd8a66,
+    #fd4c72 49%,
+    #fd387c 85%,
+    #fd2384 100%
+  );
+}
+
+@layer components {
+  /* selected state in the top navigation */
+  a[aria-current="page"] {
+    @apply border-b-4;
+  }
+  
+  .page-tabs > .ui.menu {
+    @apply mb-6 -mt-6 rounded bg-light-gray border-transparent shadow-none;
+  }
+}
+
+/* .react-parallax {
+  overflow: visible !important;
+} */
+
+/* show the file upload but make it tiny  */
+.file-upload {
+  display: block !important;
+}
+
+.file-upload > input {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 0 !important;
+  border-color: transparent !important;
+  position: absolute !important;
+}
+/* show the file upload but make it tiny  */
+
+/* hero overrides */
+.fp-section,
+#fullpage .fp-tableCell {
+  height: calc(100vh - 42px) !important;
+}
+
+.fp-slidesNav {
+  text-align: center;
+}
+
+#fullpage .fp-slidesNav ul > li > a > span {
+  background-color: #fff;
+  height: 16px;
+  width: 16px;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+#fullpage .fp-slidesNav ul > li {
+  height: auto;
+  width: auto;
+  padding: 25px 0 !important;
+  margin: 0 23px !important;
 }
 
-* {
-  box-sizing: border-box;
+#fullpage .fp-slidesNav ul > li > a.active > span,
+#fullpage .fp-slidesNav ul > li > a:hover > span {
+  background-color: #b8384c;
+  @apply shadow-md;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+@media only screen and (max-width: 1024px) {
+  .fp-controlArrow.fp-next {
+    border-width: 30px 0 30px 30px !important;
   }
-  body {
-    color: white;
-    background: black;
+  .fp-controlArrow.fp-prev {
+    border-width: 30px 30px 30px 0 !important;
   }
+}
+
+@media only screen and (max-width: 768px) {
+  .fp-controlArrow.fp-next {
+    border-width: 27.5px 0 27.5px 27.5px !important;
+  }
+  .fp-controlArrow.fp-prev {
+    border-width: 27.5px 27.5px 27.5px 0 !important;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .fp-controlArrow.fp-next {
+    border-width: 25px 0 25px 25px !important;
+  }
+  .fp-controlArrow.fp-prev {
+    border-width: 25px 25px 25px 0 !important;
+  }
+}
+/* hero overrides */
+
+/* Upcoming / Previous Events */
+.slick-list {
+  @apply !overflow-visible;
+  @apply !mx-2 lg:!mx-8;
+}
+/* Upcoming / Previous Events */
+
+/* Calendar Picker */
+.flatpickr-input {
+  border-color: rgba(34, 36, 38, 0.35);
+  box-shadow: none;
+  border: 1px solid rgba(34, 36, 38, 0.15);
+  border-radius: 0.28571429rem;
+  line-height: 1;
+  font-size: 14px;
+  min-height: 38px;
+  min-width: 250px;
+  padding: 9.5px 11px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.flatpickr-input:hover {
+  border-color: rgba(34, 36, 38, 0.35);
+}
+
+.flatpickr-input:focus,
+.flatpickr-input.active {
+  border-color: #96c8da !important;
+  outline: none !important;
+}
+/* Calendar Picker */
+
+/* FAQs Plus/Minus Style */
+.glyph-wrapper {
+  width: 26px;
+  height: 26px;
+  right: 2rem;
+  top: 11px;
+  transition: all 0.5s 0.1s ease;
+}
+
+.glyph-wrapper span {
+  position: relative;
+  left: 50%;
+  top: 50%;
+  display: block;
+  background-color: #111;
+  transition: inherit;
+  transform-origin: center;
+}
+
+.active .glyph-wrapper {
+  animation-duration: 6ms;
+  transform: rotate(270deg);
+}
+
+.active .glyph-wrapper .line-h {
+  animation-duration: 3ms;
+  opacity: 0;
+}
+
+.line-h {
+  width: inherit;
+  height: 2px;
+  transform: translate(-50%, calc(-50% + 1px));
+}
+
+.line-v {
+  width: 2px;
+  height: inherit;
+  transform: translate(-50%, calc(-50% - 1px));
+}
+/* FAQs Plus/Minus Style */
+
+/* ===== Scrollbar CSS ===== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: #4f6294;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #fd387c;
+}
+::-webkit-scrollbar-thumb:active {
+  background: #fd387c;
+}
+::-webkit-scrollbar-track {
+  background: #151748;
+  border: 0px none #ffffff;
+  border-radius: 100px;
+}
+::-webkit-scrollbar-track:hover {
+  background: #151748;
+}
+::-webkit-scrollbar-track:active {
+  background: #141748;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+/* ===== Scrollbar CSS ===== */
+
+body {
+  background-color: #141748;
+}
+
+body > div {
+  background-color: #fff;
+}
+
+
+.dx-overlay-wrapper {
+  background-color: transparent !important;
+}
+
+.event-type .ui{
+  display: none;
+}
+.show.event-type .ui{
+  display: inline-block;
+}
+
+.country .ui{
+  display: none;
+}
+.show.country .ui{
+  display: inline-block;
+}
+
+#inputID::placeholder {
+  color: hsl(0, 6%, 23%);
+  opacity: 1;
+}
+
+.ui.form .field>label {
+  display: block;
+  margin: 0 0 0.28571429rem 0;
+  color: currentColor;
+  font-size: .92857143em;
+  font-weight: 700;
+  text-transform: none;
+}
+
+button.ui.positive.button {
+  margin-left: 12px;
+  margin-top: 8px;
+}
+
+button[aria-label="Today"] {
+  display: none !important;
+}
+
+
+.rc-anchor-light.rc-anchor-normal {
+  border: 1px solid #d3d3d3;
+  margin-left: 12px;
+}
+
+.captch-type .ui{
+  display: none;
+}
+.show.captch-type .ui{
+  display: inline-block;
 }
