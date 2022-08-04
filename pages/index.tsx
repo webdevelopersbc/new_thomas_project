@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { Parallax } from 'react-parallax';
 import { NextPage } from 'next';
-import { Button } from '@components';
+import { Button, Hero, UpcomingEvents } from '@components';
 
 const Home: NextPage = () => (
   <Parallax
@@ -10,6 +10,10 @@ const Home: NextPage = () => (
     bgImageAlt="m365 is a global technology"
     strength={600}
   >
+    <Hero />
+    <div className="my-16">
+      <UpcomingEvents />
+    </div>
     <div className="grid grid-cols-1 my-2 mx-6 gap-6 md:grid-cols-2 md:gap -6 md:mx-6 md:my-2 lg:gap-12 lg:mx-12 lg:my-4">
       <div className="bg-[#f4f4f4] rounded-lg py-8 px-10">
         <div className="text-black mb-8 font-dm-sans text-2xl opacity-90">

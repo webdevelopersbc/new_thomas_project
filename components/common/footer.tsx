@@ -10,29 +10,29 @@ export const Footer = () => (
       <div className="mb-6">
         <FooterLinkColumn
           columnTitle="Helpful Links"
-          linkArray={[
-            ['Become an Organizer', '/'],
-            ['Who We Are', '/'],
-            ['Item 1', '/'],
+          links={[
+            { text: 'Become an Organizer', url: '/' },
+            { text: 'Who We Are', url: '/' },
+            { text: 'Item 1', url: '/' },
           ]}
         />
       </div>
       <div className="mb-6">
         <FooterLinkColumn
           columnTitle="Explore"
-          linkArray={[
-            ['Event Finder', '/events'],
-            ['Upcoming Events', '/events'],
-            ['Past Events', '/events?past'],
+          links={[
+            { text: 'Event Finder', url: '/events' },
+            { text: 'Upcoming Events', url: '/events' },
+            { text: 'Past Events', url: '/events?past' },
           ]}
         />
       </div>
       <div className="mb-6">
         <FooterLinkColumn
           columnTitle="About Us"
-          linkArray={[
-            ['m365 Team', '/about'],
-            ['Terms of Use', '/terms-of-use'],
+          links={[
+            { text: 'm365 Team', url: '/about' },
+            { text: 'Terms of Use', url: '/terms-of-use' },
           ]}
         />
       </div>

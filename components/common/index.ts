@@ -7,3 +7,8 @@ export * from './navigation';
 export * from './back-on-top';
 export * from './footer-link-column';
 export * from './footer';
+export * from './counter';
+export * from './hero-tile';
+export * from './event-card';
+export * from './event-slider';
+export * from './circle-button';

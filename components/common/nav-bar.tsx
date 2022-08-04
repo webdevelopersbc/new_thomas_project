@@ -10,7 +10,7 @@ export const NavBar = () => (
           src="/images/community-events-logo.png"
           alt="m365 Events"
           width={340}
-          height={52}
+          height={60}
         />
       </div>
       <div className="text-white justify-end w-full flex">
