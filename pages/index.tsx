@@ -1,24 +1,30 @@
 import React from 'react';
-import Image from 'next/image';
-import dynamic from 'next/dynamic';
 import { NextPage } from 'next';
-import { Button, Hero, UpcomingEvents } from '@components';
 import { ParallaxProps } from 'react-parallax';
+import dynamic from 'next/dynamic';
+import Image from 'next/image';
+import { Button, MainSlider, UpcomingEvents } from '@components';
+import { getEvents } from '@services';
+import { QUERY_UPCOMING_EVENTS } from '@constants';
 
 const Parallax = dynamic<ParallaxProps>(
   () => import('react-parallax').then((m) => m.Parallax),
   { ssr: false }
 );
 
-const Home: NextPage = () => (
+export type HomePageProps = {
+  events: any[];
+};
+
+const Home: NextPage<HomePageProps> = ({ events }) => (
   <Parallax
     bgImage="https://demo2wpopal.b-cdn.net/spker/wp-content/uploads/2019/07/bg1.svg"
     bgImageAlt="m365 is a global technology"
     strength={600}
   >
-    <Hero />
+    <MainSlider events={events} />
     <div className="my-16">
-      <UpcomingEvents />
+      <UpcomingEvents events={events} />
     </div>
     <div className="grid grid-cols-1 my-2 mx-6 gap-6 md:grid-cols-2 md:gap -6 md:mx-6 md:my-2 lg:gap-12 lg:mx-12 lg:my-4">
       <div className="bg-[#f4f4f4] rounded-lg py-8 px-10">
@@ -49,3 +55,11 @@ const Home: NextPage = () => (
 );
 
 export default Home;
+
+export async function getStaticProps() {
+  const events = await getEvents(QUERY_UPCOMING_EVENTS);
+
+  return {
+    props: { events },
+  };
+}

@@ -1,34 +1,34 @@
-import React, { useState } from "react";
-import { Button } from "@components";
-import Link from "next/link";
-import HamburgerMenu from "react-hamburger-menu";
+import React, { useState } from 'react';
+import { Button } from '@components';
+import Link from 'next/link';
+import HamburgerMenu from 'react-hamburger-menu';
 
 export function Navigation() {
   const [menuState, setMenuState] = useState(false);
   return (
-    <span className="content-start whitespace-nowrap">
+    <div className="whitespace-nowrap self-center">
       <Link href="/">
-        <a className="mx-2 xl:mx-3 hidden lg:inline-flex px-1 xl:px-2 !text-white border-solid border-0 border-transparent border-b-4 hover:border-b-4 hover:border-pink pb-4">
+        <a className="mx-2 xl:mx-3 hidden lg:inline-flex px-1 xl:px-2 !text-white border-solid border-0 border-transparent border-b-4 hover:border-b-4 hover:border-pink">
           Home
         </a>
       </Link>
       <Link href="/events">
-        <a className="mx-2 xl:mx-3 hidden lg:inline-flex px-1 xl:px-2 !text-white border-solid border-0 border-transparent border-b-4 hover:border-b-4 hover:border-pink pb-4">
+        <a className="mx-2 xl:mx-3 hidden lg:inline-flex px-1 xl:px-2 !text-white border-solid border-0 border-transparent border-b-4 hover:border-b-4 hover:border-pink">
           Events
         </a>
       </Link>
       <Link href="/faqs">
-        <a className="mx-2 xl:mx-3 hidden lg:inline-flex px-1 xl:px-2 !text-white border-solid border-0 border-transparent border-b-4 hover:border-b-4 hover:border-pink pb-4">
+        <a className="mx-2 xl:mx-3 hidden lg:inline-flex px-1 xl:px-2 !text-white border-solid border-0 border-transparent border-b-4 hover:border-b-4 hover:border-pink">
           FAQs
         </a>
       </Link>
       <Link href="/about">
-        <a className="mx-2 xl:mx-3 hidden lg:inline-flex px-1 xl:px-2 !text-white border-solid border-0 border-transparent border-b-4 hover:border-b-4 hover:border-pink pb-4">
+        <a className="mx-2 xl:mx-3 hidden lg:inline-flex px-1 xl:px-2 !text-white border-solid border-0 border-transparent border-b-4 hover:border-b-4 hover:border-pink">
           About
         </a>
       </Link>
       <Link href="/contact">
-        <a className="mx-2 xl:mx-3 hidden lg:inline-flex px-1 xl:px-2 !text-white border-solid border-0 border-transparent border-b-4 hover:border-b-4 hover:border-pink pb-4">
+        <a className="mx-2 xl:mx-3 hidden lg:inline-flex px-1 xl:px-2 !text-white border-solid border-0 border-transparent border-b-4 hover:border-b-4 hover:border-pink">
           Contact
         </a>
       </Link>
@@ -51,6 +51,6 @@ export function Navigation() {
         borderRadius={0}
         animationDuration={0.5}
       />
-    </span>
+    </div>
   );
 }
