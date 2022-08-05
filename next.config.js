@@ -5,6 +5,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true, // IMPORTANT!!! REMOVE WHEN STABLE
   },
+  productionBrowserSourceMaps: true,
 };
 
 module.exports = nextConfig;

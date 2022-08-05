@@ -6,3 +6,5 @@ export * from './get-events-page-slug';
 export * from './get-date-string';
 export * from './create-previous-events-query';
 export * from './create-upcoming-events-query';
+export * from './create-custom-range-events-query';
+export * from './random-bool';

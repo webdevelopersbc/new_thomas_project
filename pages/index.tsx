@@ -1,8 +1,14 @@
 import React from 'react';
 import Image from 'next/image';
-import { Parallax } from 'react-parallax';
+import dynamic from 'next/dynamic';
 import { NextPage } from 'next';
 import { Button, Hero, UpcomingEvents } from '@components';
+import { ParallaxProps } from 'react-parallax';
+
+const Parallax = dynamic<ParallaxProps>(
+  () => import('react-parallax').then((m) => m.Parallax),
+  { ssr: false }
+);
 
 const Home: NextPage = () => (
   <Parallax

@@ -4,7 +4,7 @@ import { faRightLong } from '@fortawesome/free-solid-svg-icons';
 
 export type ButtonProps = {
   className?: string;
-  link: string;
+  link?: string;
   text: string;
   icon?: boolean;
 };

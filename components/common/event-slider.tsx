@@ -1,8 +1,9 @@
 import React, { FunctionComponent, useCallback } from 'react';
+import { EventCard, CircleButton } from '@components';
 import Slider from 'react-slick';
+
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { EventCard, CircleButton } from '@components';
 
 export type EventSliderProps = {
   title: string;

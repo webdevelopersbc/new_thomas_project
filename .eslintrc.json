@@ -17,5 +17,13 @@
     "import/extensions": "off",
     "react/jsx-props-no-spreading": "off",
     "global-require": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.tsx"],
+      "rules": {
+        "no-use-before-define": "off"
+      }
+    }
+  ]
 }
