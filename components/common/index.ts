@@ -11,4 +11,3 @@ export * from './counter';
 export * from './hero-tile';
 export * from './event-card';
 export * from './event-slider';
-export * from './circle-button';

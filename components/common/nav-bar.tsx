@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Navigation } from '@components';
 
 export const NavBar = () => (
-  <div className="flex bg-black bg-opacity-90 columns-2 px-6 lg:px-10 py-5 lg:py-10 w-full">
+  <div className="flex bg-black columns-2 px-6 lg:px-10 py-5 lg:py-10 w-full">
     <div className="text-white w-full relative">
       <Link href="/">
         <Image

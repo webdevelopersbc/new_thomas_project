@@ -15,6 +15,7 @@ export const MainSlider: FunctionComponent<MainSliderProps> = ({ events }) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
+    loop: true,
     slideChanged(slider) {
       setCurrentSlide(slider.track.details.rel);
     },
@@ -42,13 +43,11 @@ export const MainSlider: FunctionComponent<MainSliderProps> = ({ events }) => {
           <SliderArrow
             left
             onClick={instanceRef.current?.prev}
-            disabled={currentSlide === 0}
           />
           <SliderArrow
             onClick={() => {
               instanceRef.current?.next();
             }}
-            disabled={currentSlide === eventNum - 1}
           />
         </>
       )}
