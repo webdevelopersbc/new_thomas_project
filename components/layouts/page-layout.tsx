@@ -5,7 +5,7 @@ import { Header } from 'semantic-ui-react';
 import { DateTime } from 'luxon';
 
 export type PageLayoutProps = {
-  title: string;
+  title?: string;
   bgImage?: boolean;
   invert?: boolean;
   children: React.ReactElement;
