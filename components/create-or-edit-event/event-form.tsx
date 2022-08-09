@@ -306,18 +306,18 @@ export const EventForm: FunctionComponent<EventFormProps> = ({ eventId }) => {
       getValues<any>([BANNER_IMAGE, PREVIEW_IMAGE, SPONSOR_PROSPECTUS]);
 
     const bannerImagesPromise = async () => {
-      const r = await uploadBlob(uploadedBannerImage, container, folder);
-      formData[BANNER_IMAGE] = r;
+      const response = await uploadBlob(uploadedBannerImage, container, folder);
+      if (response) formData[BANNER_IMAGE] = response;
     };
 
     const previewImagesPromise = async () => {
-      const r = await uploadBlob(uploadedPreviewImage, container, folder);
-      formData[PREVIEW_IMAGE] = r;
+      const response = await uploadBlob(uploadedPreviewImage, container, folder);
+      if (response) formData[PREVIEW_IMAGE] = response;
     };
 
     const sponsorProspectusPromise = async () => {
-      const r = await uploadBlob(sponsorProspectusImage, container, folder);
-      formData[SPONSOR_PROSPECTUS] = r;
+      const response = await uploadBlob(sponsorProspectusImage, container, folder);
+      if (response) formData[SPONSOR_PROSPECTUS] = response;
     };
 
     await Promise.all([

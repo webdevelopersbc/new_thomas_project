@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Flatpickr from 'react-flatpickr';
 import Dropzone from 'react-dropzone';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { FormInputs } from '@components';
 import {
   REGISTRATION_END_DATE,
@@ -467,33 +468,58 @@ export const RegistrationStep: FunctionComponent<RegistrationStepProps> = ({
                 render={({ field }) => {
                   const sponsorProspectus = getValues(SPONSOR_PROSPECTUS);
                   return (
-                    <Dropzone
-                      onDrop={(acceptedFiles) => {
-                        field.onChange(acceptedFiles[0]);
-                      }}
-                      multiple={false}
-                    >
-                      {({ getRootProps }) => (
-                        <section className="container border-2 border-dashed p-8">
-                          <div {...getRootProps({ className: 'dropzone' })}>
-                            <p>
-                              Drag 'n' drop some files here, or click to select
-                              files
-                            </p>
-                          </div>
-                          {sponsorProspectus && (
-                            <aside>
-                              <List bulleted>
-                                <List.Item>
-                                  {sponsorProspectus.path} -
-                                  {sponsorProspectus.size} bytes
-                                </List.Item>
-                              </List>
-                            </aside>
-                          )}
-                        </section>
-                      )}
-                    </Dropzone>
+                    <>
+                      <Dropzone
+                        {...field}
+                        ref={null}
+                        onDrop={(acceptedFiles) => {
+                          field.onChange(acceptedFiles[0]);
+                        }}
+                        multiple={false}
+                      >
+                        {({ getRootProps }) => (
+                          <section className="container border-2 border-dashed p-8">
+                            <div
+                              {...getRootProps({
+                                className: 'dropzone',
+                              })}
+                            >
+                              <p className="!mb-2">
+                                Drag &apos;n&apos; drop some files here, or
+                                click to select files
+                              </p>
+                            </div>
+                            {sponsorProspectus.name && (
+                              <aside>
+                                <List bulleted>
+                                  <List.Item>
+                                    {`${sponsorProspectus.path} - ${sponsorProspectus.size} bytes`}
+                                  </List.Item>
+                                </List>
+                              </aside>
+                            )}
+                            {sponsorProspectus &&
+                              typeof sponsorProspectus === 'string' &&
+                              String(sponsorProspectus).indexOf('/') !== -1 && (
+                                <a href={sponsorProspectus}>
+                                  <FontAwesomeIcon
+                                    icon={faDownload}
+                                    className="mr-1"
+                                  />
+                                  {String(sponsorProspectus).substring(
+                                    String(sponsorProspectus).lastIndexOf('/') +
+                                      1
+                                  )}
+                                </a>
+                              )}
+                          </section>
+                        )}
+                      </Dropzone>
+                      <Form.Input
+                        style={{ display: 'none' }}
+                        error={errors?.sponsor_prospectus?.message}
+                      />
+                    </>
                   );
                 }}
               />

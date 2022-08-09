@@ -69,7 +69,8 @@ export const uploadBlob = async (
   container: string,
   folder: string
 ) => {
-  if (!file) return null;
+  if (!file?.name) return null;
+
   const url = `${AZ_BLOB_STORAGE_API_BASE_URL}/${container}/${folder}/${file.name}`;
   const blobUrl = `${AZ_BLOB_STORAGE_BASE_URL}/${container}/${folder}/${file.name}`;
   const UTCstring = new Date().toUTCString();

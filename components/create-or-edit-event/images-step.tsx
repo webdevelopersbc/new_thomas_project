@@ -21,6 +21,7 @@ import {
   PREVIEW_IMAGE_ATTRIBUTION_TEXT,
   PREVIEW_IMAGE_RIGHTS,
 } from '@constants';
+import Image from 'next/image';
 
 export type ImagesStepProps = {
   control: Control<FormInputs>;
@@ -57,17 +58,17 @@ export const ImagesStep: FunctionComponent<ImagesStepProps> = ({
                   htmlFor={BANNER_IMAGE}
                   className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
                 >
-                  Banner Image{' '}
+                  Banner Image
                   <FontAwesomeIcon icon={faCircleInfo} className="pl-1" />
                 </label>
               }
             >
               <Popup.Header>Banner Image</Popup.Header>
               <Popup.Content>
-                {/* <StaticImage
+                <Image
                   alt="Banner Image Preview"
-                  src="../images/banner_image_tip.png"
-                /> */}
+                  src="/images/banner_image_tip.png"
+                />
               </Popup.Content>
             </Popup>
             <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -111,12 +112,12 @@ export const ImagesStep: FunctionComponent<ImagesStepProps> = ({
                                 className: 'dropzone',
                               })}
                             >
-                              <p>
-                                Drag 'n' drop some files here, or click to
-                                select files
+                              <p className="!mb-2">
+                                Drag &apos;n&apos; drop some files here, or
+                                click to select files
                               </p>
                             </div>
-                            {uploadedBannerImage && (
+                            {uploadedBannerImage?.name && (
                               <aside>
                                 <List bulleted>
                                   <List.Item>
@@ -126,6 +127,13 @@ export const ImagesStep: FunctionComponent<ImagesStepProps> = ({
                                 </List>
                               </aside>
                             )}
+                            {uploadedBannerImage &&
+                              typeof uploadedBannerImage === 'string' && (
+                                <img
+                                  alt="upload_banner"
+                                  src={String(uploadedBannerImage)}
+                                />
+                              )}
                           </section>
                         )}
                       </Dropzone>
@@ -153,12 +161,11 @@ export const ImagesStep: FunctionComponent<ImagesStepProps> = ({
               <Controller
                 name={BANNER_IMAGE_RIGHTS}
                 control={control}
-                render={({ field: { value, ...rest } }) => (
+                render={({ field }) => (
                   <Checkbox
-                    {...rest}
-                    checked={value}
+                    checked={field.value}
                     onChange={(e, data) => {
-                      rest.onChange(data.checked);
+                      field.onChange(data.checked);
                     }}
                     label="I have the rights to use this photo. If not you must provide attribution"
                   />
@@ -247,10 +254,10 @@ export const ImagesStep: FunctionComponent<ImagesStepProps> = ({
             >
               <Popup.Header>Preview Image</Popup.Header>
               <Popup.Content>
-                {/* <StaticImage
-        alt="Preview Image Preview"
-        src="../images/preview_image_tip.png"
-      /> */}
+                <Image
+                  alt="Preview Image Preview"
+                  src="/images/preview_image_tip.png"
+                />
               </Popup.Content>
             </Popup>
             <div className="mt-1 sm:mt-0 sm:col-span-2">
@@ -295,12 +302,12 @@ export const ImagesStep: FunctionComponent<ImagesStepProps> = ({
                                 className: 'dropzone',
                               })}
                             >
-                              <p>
-                                Drag 'n' drop some files here, or click to
-                                select files
+                              <p className="!mb-2">
+                                Drag &apos;n&apos; drop some files here, or
+                                click to select files
                               </p>
                             </div>
-                            {uploadedPreviewImage && (
+                            {uploadedPreviewImage?.name && (
                               <aside>
                                 <List bulleted>
                                   <List.Item>
@@ -310,6 +317,13 @@ export const ImagesStep: FunctionComponent<ImagesStepProps> = ({
                                 </List>
                               </aside>
                             )}
+                            {uploadedPreviewImage &&
+                              typeof uploadedPreviewImage === 'string' && (
+                                <img
+                                  alt="uploaded_preview_image"
+                                  src={String(uploadedPreviewImage)}
+                                />
+                              )}
                           </section>
                         )}
                       </Dropzone>{' '}
@@ -337,12 +351,11 @@ export const ImagesStep: FunctionComponent<ImagesStepProps> = ({
               <Controller
                 name={PREVIEW_IMAGE_RIGHTS}
                 control={control}
-                render={({ field: { value, ...rest } }) => (
+                render={({ field }) => (
                   <Checkbox
-                    {...rest}
-                    checked={value}
+                    checked={field.value}
                     onChange={(e, data) => {
-                      rest.onChange(data.checked);
+                      field.onChange(data.checked);
                     }}
                     label="I have the rights to use this photo. If not you must provide attribution"
                   />
