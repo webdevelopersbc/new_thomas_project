@@ -32,6 +32,11 @@ export const EVENT_TYPE = 'event_type';
 export const STATUS = 'status';
 export const CALL_FOR_SPEAKERS_LINK = 'call_for_speakers_link';
 export const CALL_FOR_SPONSORS_LINK = 'call_for_sponsors_link';
+export const HOME_CONTENT = 'home_content';
+export const SESSIONS_CONTENT = 'sessions_content';
+export const SPEAKERS_CONTENT = 'speakers_content';
+export const SPONSORS_CONTENT = 'sponsors_content';
+export const SCHEDULE_CONTENT = 'schedule_content';
 
 export const VALIDATIONS = {
   GENERAL: [TITLE, CONTACT_EMAIL, START_DATE, END_DATE],

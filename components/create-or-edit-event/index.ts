@@ -7,3 +7,4 @@ export * from './images-step';
 export * from './location-step';
 export * from './registration-step';
 export * from './event-stepper';
+export * from './content-step';

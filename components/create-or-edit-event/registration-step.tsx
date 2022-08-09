@@ -489,7 +489,7 @@ export const RegistrationStep: FunctionComponent<RegistrationStepProps> = ({
                                 click to select files
                               </p>
                             </div>
-                            {sponsorProspectus.name && (
+                            {sponsorProspectus?.name && (
                               <aside>
                                 <List bulleted>
                                   <List.Item>

@@ -14,6 +14,7 @@ import {
   LocationStep,
   RegistrationStep,
   EventStepper,
+  ContentStep,
 } from '@components';
 import { DateTime } from 'luxon';
 import { v4 as uuidv4 } from 'uuid';
@@ -41,7 +42,7 @@ import {
 } from '@constants';
 
 interface FileWithPath extends File {
-  path: string
+  path: string;
 }
 
 export type EventFormProps = {
@@ -95,6 +96,7 @@ export type FormInputs = {
   schedule_content: string;
   speakers_content: string;
   sessions_content: string;
+  sponsors_content: string;
   status: string;
   tagline: string;
   timezone: string;
@@ -133,7 +135,7 @@ const schema = yup.object().shape({
     .typeError('Longitude must be a number')
     .min(-90, 'Longitude must be more than -90')
     .max(90, 'Longitude must be lower than 90'),
-    latitude: yup
+  latitude: yup
     .number()
     .nullable()
     .transform((curr, orig) => (orig === '' ? null : curr))
@@ -280,6 +282,11 @@ export const EventForm: FunctionComponent<EventFormProps> = ({ eventId }) => {
       name: 'Registration, Speakers & Sponsors',
       status: 'upcoming',
     },
+    {
+      id: 'Step 5',
+      name: 'Page Content',
+      status: 'upcoming',
+    },
   ]);
 
   const nextStep = () => {
@@ -306,18 +313,22 @@ export const EventForm: FunctionComponent<EventFormProps> = ({ eventId }) => {
       getValues<any>([BANNER_IMAGE, PREVIEW_IMAGE, SPONSOR_PROSPECTUS]);
 
     const bannerImagesPromise = async () => {
-      const response = await uploadBlob(uploadedBannerImage, container, folder);
-      if (response) formData[BANNER_IMAGE] = response;
+      const result = await uploadBlob(uploadedBannerImage, container, folder);
+      if (result) formData[BANNER_IMAGE] = result;
     };
 
     const previewImagesPromise = async () => {
-      const response = await uploadBlob(uploadedPreviewImage, container, folder);
-      if (response) formData[PREVIEW_IMAGE] = response;
+      const result = await uploadBlob(uploadedPreviewImage, container, folder);
+      if (result) formData[PREVIEW_IMAGE] = result;
     };
 
     const sponsorProspectusPromise = async () => {
-      const response = await uploadBlob(sponsorProspectusImage, container, folder);
-      if (response) formData[SPONSOR_PROSPECTUS] = response;
+      const result = await uploadBlob(
+        sponsorProspectusImage,
+        container,
+        folder
+      );
+      if (result) formData[SPONSOR_PROSPECTUS] = result;
     };
 
     await Promise.all([
@@ -423,6 +434,8 @@ export const EventForm: FunctionComponent<EventFormProps> = ({ eventId }) => {
             getValues={getValues}
           />
         );
+      case 4:
+        return <ContentStep control={control} />;
       default:
         return null;
     }
