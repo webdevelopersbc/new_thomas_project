@@ -1,8 +1,8 @@
 {
   "extends": [
     "airbnb",
-    "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
+    "plugin:react/recommended",
     "plugin:@next/next/recommended",
     "next/core-web-vitals",
     "prettier"
@@ -16,7 +16,8 @@
     "react/require-default-props": "off",
     "import/extensions": "off",
     "react/jsx-props-no-spreading": "off",
-    "global-require": "off"
+    "global-require": "off",
+    "jsx-a11y/anchor-is-valid": "off"
   },
   "overrides": [
     {

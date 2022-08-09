@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Typewriter } from 'react-simple-typewriter';
-import { PageLayout, EventCard, Button } from '@components';
+import { PageLayout, EventCard, AppButton } from '@components';
 import { Checkbox, Dropdown, Transition } from 'semantic-ui-react';
 import Flatpickr from 'react-flatpickr';
 import {
@@ -250,7 +250,7 @@ const Events: NextPage = () => {
               </div>
             </div>
             <div className="shrink hidden">
-              <Button text="Search" className="px-10" />
+              <AppButton text="Search" className="px-10" />
             </div>
           </div>
         </div>

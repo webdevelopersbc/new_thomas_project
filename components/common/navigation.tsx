@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Button } from '@components';
+import { AppButton } from '@components';
 import Link from 'next/link';
 import HamburgerMenu from 'react-hamburger-menu';
+import { useRouter } from 'next/router';
 
-export function Navigation() {
+export const Navigation = () => {
   const [menuState, setMenuState] = useState(false);
+  const router = useRouter();
   return (
     <div className="whitespace-nowrap self-center">
       <Link href="/">
@@ -32,9 +34,9 @@ export function Navigation() {
           Contact
         </a>
       </Link>
-      <Button
+      <AppButton
         text="Create Event"
-        link="/app/new-event"
+        onClick={() => router.push('/app/new-event')}
         className="mx-2 xl:mx-5 hidden lg:inline-flex"
       />
       <HamburgerMenu
@@ -53,4 +55,4 @@ export function Navigation() {
       />
     </div>
   );
-}
+};

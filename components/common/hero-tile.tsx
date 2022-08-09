@@ -2,7 +2,8 @@ import React, { FunctionComponent } from 'react';
 import { getDateString, getEventsPageSlug, datesActive } from '@utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { Counter, Button } from '@components';
+import { Counter, AppButton } from '@components';
+import { useRouter } from 'next/router';
 
 export type HeroTileProps = {
   event: {
@@ -34,6 +35,8 @@ export const HeroTile: FunctionComponent<HeroTileProps> = ({
   compact,
   showDetails,
 }) => {
+  const router = useRouter();
+
   const registrationActive = datesActive(
     event.registration_start_date,
     event.registration_end_date
@@ -79,17 +82,21 @@ export const HeroTile: FunctionComponent<HeroTileProps> = ({
             )}
             <div className="flex">
               {showDetails && (
-                <Button
+                <AppButton
                   text="Event Details"
-                  link={getEventsPageSlug(event.start_date, event.title)}
+                  onClick={() =>
+                    router.push(
+                      getEventsPageSlug(event.start_date, event.title)
+                    )
+                  }
                   className="mt-14 mr-6"
                 />
               )}
               {registrationActive && (
-                <Button
+                <AppButton
                   text="Register"
                   link={event.registration_url}
-                  icon
+                  hasIcon
                   className="mt-14"
                 />
               )}

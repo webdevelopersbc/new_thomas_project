@@ -7,6 +7,7 @@ import { Button, Card, Header, Icon, Image, Modal } from 'semantic-ui-react';
 import { sort, toTitleCase, getDateString } from '@utils';
 import { PageLayout } from '@components';
 import { deleteEvent, getEvents } from '@services';
+import { HARD_CODE_CLIENT_ID } from '@constants';
 
 const Dashboard: NextPage = () => {
   const [events, setEvents] = useState<any[]>([]);
@@ -16,7 +17,7 @@ const Dashboard: NextPage = () => {
   const router = useRouter();
 
   const fetchData = async () => {
-    const myEvents = `PartitionKey eq '24dccf3a5fdf0e834c35a22707217de7'`;
+    const myEvents = `PartitionKey eq '${HARD_CODE_CLIENT_ID}'`;
     const response = await getEvents(myEvents);
     const sorted = sort(response, 'start_date', 'desc');
     setEvents(sorted);
@@ -30,7 +31,6 @@ const Dashboard: NextPage = () => {
     router.push({
       pathname: '/app/edit-event',
       query: {
-        userId: '24dccf3a5fdf0e834c35a22707217de7',
         eventId,
       },
     });
@@ -89,7 +89,12 @@ const Dashboard: NextPage = () => {
               event.status === 'published' ? 'text-green-800' : 'text-red-600';
             return (
               <Card className="" key={event.RowKey}>
-                <Image src={event.preview_image} wrapped ui={false} />
+                <Image
+                  alt="preview image"
+                  src={event.preview_image}
+                  wrapped
+                  ui={false}
+                />
                 <div className={`absolute top-2 right-4 ${color}`}>
                   {event.status === 'published' && (
                     <FontAwesomeIcon icon={faEye} className="pr-2" />
