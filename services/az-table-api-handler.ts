@@ -4,7 +4,22 @@ import {
   AZ_BLOB_STORAGE_BASE_URL,
 } from '@constants';
 
-export const getEvents = async (filter: string, top?: string) => {
+export const getAllEvents = async () => {
+  const url = `${AZ_TABLE_STORAGE_API_BASE_URL}/events`;
+
+  try {
+    const response = await fetch(url, { method: 'GET' });
+
+    const responseObj = await response.json();
+
+    return response.status === 200 ? await responseObj.value : null;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export const getEvents = async (filter?: string, top?: string) => {
   const url = `${AZ_TABLE_STORAGE_API_BASE_URL}/events?${
     filter ? `&$filter=${filter}` : ''
   }${top ? `&$top=${top}` : ''}`;
