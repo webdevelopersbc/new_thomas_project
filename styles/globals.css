@@ -15,6 +15,11 @@
 @import "@syncfusion/ej2-splitbuttons/styles/material.css";
 @import "@syncfusion/ej2-react-schedule/styles/material.css";
 
+a:hover,
+a:focus {
+  @apply text-pink;
+}
+
 /* background gradient for buttons / lines */
 .gradient-bg {
   background: linear-gradient(
@@ -34,6 +39,13 @@
   
   .page-tabs > .ui.menu {
     @apply mb-6 -mt-6 rounded bg-light-gray border-transparent shadow-none;
+  }
+  .page-tabs > .ui.menu > .item {
+    @apply text-base hover:bg-pink hover:text-white;
+  }
+
+  .page-tabs .ui.menu > .active {
+    @apply bg-pink text-white;
   }
 }
 
