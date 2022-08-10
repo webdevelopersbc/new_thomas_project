@@ -1,11 +1,16 @@
 /** @type {import('next').NextConfig} */
+
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   eslint: {
     ignoreDuringBuilds: true, // IMPORTANT!!! REMOVE WHEN STABLE
   },
-  productionBrowserSourceMaps: true,
+  productionBrowserSourceMaps: true, // IMPORTANT!!! REMOVE IN PRODUCTION RELEASE
 };
 
-module.exports = nextConfig;
+module.exports = withBundleAnalyzer(nextConfig);
