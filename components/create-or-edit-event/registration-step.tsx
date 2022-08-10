@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+import dynamic from 'next/dynamic';
 import {
   Control,
   Controller,
@@ -8,7 +9,6 @@ import {
 } from 'react-hook-form';
 import { Form, Message, Icon, List } from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Flatpickr from 'react-flatpickr';
 import Dropzone from 'react-dropzone';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
@@ -26,6 +26,8 @@ import {
   CALL_FOR_SPEAKERS_LINK,
   CALL_FOR_SPONSORS_LINK,
 } from '@constants';
+
+const Flatpickr = dynamic(() => import('react-flatpickr'), { ssr: false });
 
 export type RegistrationStepProps = {
   control: Control<FormInputs>;
@@ -100,7 +102,6 @@ export const RegistrationStep: FunctionComponent<RegistrationStepProps> = ({
                   <>
                     <Flatpickr
                       {...field}
-                      ref={null}
                       options={{
                         dateFormat: 'F j, Y h:i K',
                         enableTime: true,
@@ -156,7 +157,6 @@ export const RegistrationStep: FunctionComponent<RegistrationStepProps> = ({
                   <>
                     <Flatpickr
                       {...field}
-                      ref={null}
                       options={{
                         dateFormat: 'F j, Y h:i K',
                         enableTime: true,
@@ -259,7 +259,6 @@ export const RegistrationStep: FunctionComponent<RegistrationStepProps> = ({
                 render={({ field }) => (
                   <Flatpickr
                     {...field}
-                    ref={null}
                     options={{
                       dateFormat: 'F j, Y h:i K',
                       enableTime: true,
@@ -299,7 +298,6 @@ export const RegistrationStep: FunctionComponent<RegistrationStepProps> = ({
                 render={({ field }) => (
                   <Flatpickr
                     {...field}
-                    ref={null}
                     options={{
                       dateFormat: 'F j, Y h:i K',
                       enableTime: true,
@@ -366,7 +364,6 @@ export const RegistrationStep: FunctionComponent<RegistrationStepProps> = ({
                 render={({ field }) => (
                   <Flatpickr
                     {...field}
-                    ref={null}
                     options={{
                       dateFormat: 'F j, Y h:i K',
                       enableTime: true,
@@ -407,7 +404,6 @@ export const RegistrationStep: FunctionComponent<RegistrationStepProps> = ({
                   <>
                     <Flatpickr
                       {...field}
-                      ref={null}
                       options={{
                         dateFormat: 'F j, Y h:i K',
                         enableTime: true,

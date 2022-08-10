@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { NextPage } from 'next';
 import { Typewriter } from 'react-simple-typewriter';
 import { PageLayout, EventCard, AppButton } from '@components';
 import { Checkbox, Dropdown, Transition } from 'semantic-ui-react';
-import Flatpickr from 'react-flatpickr';
 import {
   createCustomRangeEventsQuery,
   datesActive,
@@ -18,7 +19,8 @@ import {
   PREVIOUS_EVENTS,
   UPCOMING_EVENTS,
 } from '@constants';
-import { NextPage } from 'next';
+
+const Flatpickr = dynamic(() => import('react-flatpickr'), { ssr: false });
 
 // TODO show no events when there is nothing available from filters
 const Events: NextPage = () => {

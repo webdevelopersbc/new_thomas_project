@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+import dynamic from 'next/dynamic';
 import {
   Control,
   Controller,
@@ -10,9 +11,10 @@ import { Form, Popup } from 'semantic-ui-react';
 import { DateTime } from 'luxon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
-import Flatpickr from 'react-flatpickr';
 import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 import { END_DATE, START_DATE, TITLE } from '@constants';
+
+const Flatpickr = dynamic(() => import('react-flatpickr'), { ssr: false });
 
 export type GeneralStepProps = {
   control: Control<FormInputs>;
@@ -162,7 +164,6 @@ export const GeneralStep: FunctionComponent<GeneralStepProps> = ({
                   <>
                     <Flatpickr
                       {...field}
-                      ref={null}
                       options={{
                         dateFormat: 'F j, Y h:i K',
                         enableTime: true,
