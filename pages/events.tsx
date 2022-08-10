@@ -19,6 +19,7 @@ import {
   PREVIOUS_EVENTS,
   UPCOMING_EVENTS,
 } from '@constants';
+import { string } from 'yup';
 
 const Flatpickr = dynamic(() => import('react-flatpickr'), { ssr: false });
 
@@ -36,6 +37,7 @@ const Events: NextPage = () => {
     DateTime.now().plus({ weeks: 1 }).toJSDate(),
   ]);
   const [countries, setCountriesValue] = useState([]);
+  const [countryOptions, setCountryOptions] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<any[]>();
   const [callForSpeakersFilter, setCallForSpeakersFilter] =
@@ -44,6 +46,10 @@ const Events: NextPage = () => {
     useState<boolean>(false);
   const [registrationOpenFilter, setRegistrationOpenFilter] =
     useState<boolean>(false);
+
+
+    //almost like different pages, the background keeps changing.
+    //
 
   useEffect(() => {
     fetchAndSetEvent();
@@ -85,24 +91,40 @@ const Events: NextPage = () => {
     const response = await getEvents(filter);
     const sorted = sort(response, 'start_date', sortDirection);
     setEvents(sorted);
+
+    const countries = [...new Set(sorted.map((s, i) => { 
+      return {
+        key: i,
+        text: s.country,
+        value: s.country
+      } 
+    }))];
+
+    setCountryOptions(countries);
+    console.log('🚀 ~ file: events.tsx ~ line 90 ~ fetchAndSetEvent ~ countries', countries);
   };
 
   const filterEvents = (eventsInput: any[]) => {
     const filtered = eventsInput.filter((event) => {
-      let display = false;
-      display = true; // default to show the event
-
+      event.display = true;
+      //display = true; // default to show the event
+      
+      
       if (countries.length >= 1) {
+       console.log(event);
         const countrySelected = countries.find((c) => c === event.country);
-        if (!countrySelected) display = false;
+        console.log('🚀 ~ file: events.tsx ~ line 111 ~ filtered ~ countrySelected', countrySelected);
+        if (!countrySelected) event.display = false;
+        console.log('🚀 ~ file: events.tsx ~ line 113 ~ filtered ~ !countrySelected', !countrySelected);
       }
+      console.log('🚀 ~ file: events.tsx ~ line 106 ~ filtered ~ display', event.display);
 
       if (registrationOpenFilter) {
         const registrationActive = datesActive(
           event.registration_start_date,
           event.registration_end_date
         );
-        if (event.display && !registrationActive) display = false;
+        if (event.display && !registrationActive) event.display = false;
       }
 
       if (callForSpeakersFilter) {
@@ -110,7 +132,7 @@ const Events: NextPage = () => {
           event.speaker_call_start_date,
           event.speaker_call_end_date
         );
-        if (display && !callForSpeakersActive) display = false;
+        if (event.display && !callForSpeakersActive) event.display = false;
       }
 
       if (callForSponsorsFilter) {
@@ -118,23 +140,20 @@ const Events: NextPage = () => {
           event.sponsor_call_start_date,
           event.sponsor_call_end_date
         );
-        if (display && !callForSponsorsActive) display = false;
+        if (event.display && !callForSponsorsActive) event.display = false;
       }
 
-      return {
-        ...event,
-        display,
-      };
+      return event;
     });
 
+    console.log(filtered);
     setFilteredEvents(filtered);
   };
 
   const updateCountries = async (_event: any, data: any) => {
+    console.log(data.value);
     setCountriesValue(data.value);
   };
-
-  const countryOptions: any[] = [];
 
   const whenOptions = [
     {
