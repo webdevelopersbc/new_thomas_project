@@ -14,7 +14,7 @@ import { QUERY_PREVIOUS_EVENTS, QUERY_UPCOMING_EVENTS } from '@constants';
 import { useRouter } from 'next/router';
 
 const Parallax = dynamic<ParallaxProps>(
-  () => import('react-parallax').then((m) => m.Parallax),
+  () => import('react-parallax').then((module) => module.Parallax),
   { ssr: false }
 );
 

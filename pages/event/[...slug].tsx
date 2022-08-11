@@ -4,9 +4,9 @@ import {
   PageLayout,
   SessionsTab,
   HomeTab,
-  ScheduleTab,
   SpeakersTab,
   HeroTile,
+  ScheduleTabProps,
 } from '@components';
 import shuffleArray from 'shuffle-array';
 import {
@@ -16,16 +16,29 @@ import {
   getSpeakers,
 } from '@services';
 import { GetStaticPaths, GetStaticProps } from 'next';
+import dynamic from 'next/dynamic';
+
+const ScheduleTab = dynamic<ScheduleTabProps>(
+  () =>
+    import('../../components/event-details/schedule-tab').then(
+      (module) => module.ScheduleTab
+    ),
+  { ssr: false }
+);
 
 export type EventDetailsProps = {
   event: any;
+  sessions: any[];
+  schedule: any[];
+  speakers: any[];
 };
 
-const EventDetails: FunctionComponent<EventDetailsProps> = ({ event }) => {
-  const [sessions, setSessions] = useState(null);
-  const [speakers, setSpeakers] = useState<any[]>([]);
-  const [schedule, setSchedule] = useState<any>(null);
-
+const EventDetails: FunctionComponent<EventDetailsProps> = ({
+  event,
+  sessions,
+  schedule,
+  speakers,
+}) => {
   const panes = [
     {
       menuItem: 'Home',
@@ -80,20 +93,6 @@ const EventDetails: FunctionComponent<EventDetailsProps> = ({ event }) => {
   //   { menuItem: "About", render: () => <Tab.Pane>Tab 3 Content</Tab.Pane> },
   // ]
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const _sessions = await getSessions(event.sessionize_key);
-      setSessions(_sessions);
-      const shuffledSpeakers = shuffleArray(
-        await getSpeakers(event.sessionize_key)
-      );
-      setSpeakers(shuffledSpeakers);
-      const scheduleEvent = await getGridSmart(event.sessionize_key);
-      setSchedule(scheduleEvent);
-    };
-    fetchData();
-  }, [event.sessionize_key]);
-
   return (
     <>
       <HeroTile event={event} compact />
@@ -113,11 +112,28 @@ const EventDetails: FunctionComponent<EventDetailsProps> = ({ event }) => {
 
 export default EventDetails;
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  if (!params) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    };
+  }
+
   const allEvents = await getAllEvents();
 
+  const event = allEvents[0];
+
+  const sessions = await getSessions(event.sessionize_key);
+  const speakers = await getSpeakers(event.sessionize_key);
+  const schedule = await getGridSmart(event.sessionize_key);
+
+  const shuffledSpeakers = shuffleArray(speakers);
+
   return {
-    props: { event: allEvents[0] },
+    props: { event, sessions, schedule, speakers: shuffledSpeakers },
   };
 };
 

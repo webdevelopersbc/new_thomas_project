@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import dynamic from 'next/dynamic';
 
 const DateClock = dynamic<{}>(
-  () => import('./date-clock').then((m) => m.DateClock),
+  () => import('./date-clock').then((module) => module.DateClock),
   { ssr: false }
 );
 
