@@ -37,14 +37,6 @@ export const getEvent = async (userId: string, eventId: string) => {
   return response[0];
 };
 
-export const getEventDetail = async (title: string, start_date: string) => {
-  const filter = `title eq '${title}'`;
-
-  const response = await getEvents(filter);
-
-  return response[0];
-};
-
 export const deleteEvent = async (partitionKey: string, rowKey: string) => {
   const url = `${AZ_TABLE_STORAGE_API_BASE_URL}/events/delete/${partitionKey}/${rowKey}`;
   console.error(url);

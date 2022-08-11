@@ -11,7 +11,6 @@ import {
 import shuffleArray from 'shuffle-array';
 import {
   getAllEvents,
-  getEventDetail,
   getGridSmart,
   getSessions,
   getSpeakers,
@@ -114,22 +113,11 @@ const EventDetails: FunctionComponent<EventDetailsProps> = ({ event }) => {
 
 export default EventDetails;
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  if (!params) {
-    return {
-      redirect: {
-        destination: '/404',
-        permanent: false,
-      },
-    };
-  }
-
-  const [start_date, title] = params.slug as string[];
-
-  const event = await getEventDetail(title, start_date);
+export const getStaticProps: GetStaticProps = async () => {
+  const allEvents = await getAllEvents();
 
   return {
-    props: { event },
+    props: { event: allEvents[0] },
   };
 };
 
