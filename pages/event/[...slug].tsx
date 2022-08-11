@@ -11,6 +11,7 @@ import {
 import shuffleArray from 'shuffle-array';
 import {
   getAllEvents,
+  getEventDetail,
   getGridSmart,
   getSessions,
   getSpeakers,
@@ -122,13 +123,28 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     };
   }
 
-  const allEvents = await getAllEvents();
+  const [start_date, title] = params.slug as string[];
 
-  const event = allEvents[0];
+  const event = await getEventDetail(title.replace(/-/g, ' '), start_date);
 
-  const sessions = await getSessions(event.sessionize_key);
-  const speakers = await getSpeakers(event.sessionize_key);
-  const schedule = await getGridSmart(event.sessionize_key);
+  if (!event) {
+    return {
+      redirect: {
+        destination: '/404',
+        permanent: false,
+      },
+    };
+  }
+
+  const sessionsPromise = getSessions(event.sessionize_key);
+  const speakersPromise = getSpeakers(event.sessionize_key);
+  const schedulePromise = getGridSmart(event.sessionize_key);
+
+  const [sessions, speakers, schedule] = await Promise.all([
+    sessionsPromise,
+    speakersPromise,
+    schedulePromise,
+  ]);
 
   const shuffledSpeakers = shuffleArray(speakers);
 

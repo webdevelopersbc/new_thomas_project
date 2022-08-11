@@ -3,16 +3,21 @@ import {
   AZ_TABLE_STORAGE_API_BASE_URL,
   AZ_BLOB_STORAGE_BASE_URL,
 } from '@constants';
+import { plusOneDay } from '@utils';
 
 export const getAllCountries = async () => {
-  return await getEvents(null, null, "country")
-}
+  return await getEvents(null, null, 'country');
+};
 
 export const getAllEvents = async () => {
   return await getEvents();
-}
+};
 
-export const getEvents = async (filter?: string | null, top?: string | null, select?: string | null) => {
+export const getEvents = async (
+  filter?: string | null,
+  top?: string | null,
+  select?: string | null
+) => {
   const url = `${AZ_TABLE_STORAGE_API_BASE_URL}/events?${
     filter ? `&$filter=${filter}` : ''
   }${top ? `&$top=${top}` : ''}${select ? `&$select=${select}` : ''}`;
@@ -31,6 +36,16 @@ export const getEvents = async (filter?: string | null, top?: string | null, sel
 
 export const getEvent = async (userId: string, eventId: string) => {
   const filter = `PartitionKey eq '${userId}' and RowKey eq '${eventId}'`;
+
+  const response = await getEvents(filter);
+
+  return response[0];
+};
+
+export const getEventDetail = async (title: string, start_date: string) => {
+  const startDatePlusOne = plusOneDay(start_date);
+
+  const filter = `title eq '${title}' and start_date ge '${start_date}' and start_date lt '${startDatePlusOne}'`;
 
   const response = await getEvents(filter);
 

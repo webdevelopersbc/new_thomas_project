@@ -13,3 +13,4 @@ export * from './get-sessions-for-speakers';
 export * from './get-speaker-from-speakers';
 export * from './get-speaker-sessions';
 export * from './nl2br';
+export * from './plus-one-day';
