@@ -18,6 +18,7 @@ import {
 } from '@services';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import dynamic from 'next/dynamic';
+import { DateTime } from 'luxon';
 
 const ScheduleTab = dynamic<ScheduleTabProps>(
   () =>
@@ -154,8 +155,20 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const allEvents = await getAllEvents();
+
+  const paths = allEvents.map((event: any) => {
+    const startDate = DateTime.fromISO(event.start_date).toFormat('yyyy-MM-dd');
+
+    return {
+      params: {
+        slug: [startDate, event.title],
+      },
+    };
+  });
+
   return {
-    paths: [],
+    paths,
     fallback: 'blocking',
   };
 };
