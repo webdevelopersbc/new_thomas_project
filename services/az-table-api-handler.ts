@@ -4,25 +4,18 @@ import {
   AZ_BLOB_STORAGE_BASE_URL,
 } from '@constants';
 
-export const getAllEvents = async () => {
-  const url = `${AZ_TABLE_STORAGE_API_BASE_URL}/events`;
-
-  try {
-    const response = await fetch(url, { method: 'GET' });
-
-    const responseObj = await response.json();
-
-    return response.status === 200 ? await responseObj.value : null;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+export const getAllCountries = async () => {
+  return await getEvents(null, null, "country")
 }
 
-export const getEvents = async (filter?: string, top?: string) => {
+export const getAllEvents = async () => {
+  return await getEvents();
+}
+
+export const getEvents = async (filter?: string | null, top?: string | null, select?: string | null) => {
   const url = `${AZ_TABLE_STORAGE_API_BASE_URL}/events?${
     filter ? `&$filter=${filter}` : ''
-  }${top ? `&$top=${top}` : ''}`;
+  }${top ? `&$top=${top}` : ''}${select ? `&$select=${select}` : ''}`;
 
   try {
     const response = await fetch(url, { method: 'GET' });

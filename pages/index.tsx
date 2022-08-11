@@ -9,7 +9,7 @@ import {
   UpcomingEvents,
   PreviousEvents,
 } from '@components';
-import { getEvents } from '@services';
+import { getAllCountries, getAllEvents, getEvents } from '@services';
 import { QUERY_PREVIOUS_EVENTS, QUERY_UPCOMING_EVENTS } from '@constants';
 import { useRouter } from 'next/router';
 
@@ -81,6 +81,12 @@ export async function getStaticProps() {
     upcommingEventsPromise,
     previousEventsPromise,
   ]);
+
+  var x = await getAllEvents();
+  console.log('🚀 ~ file: index.tsx ~ line 86 ~ getStaticProps ~ x', x);
+
+  var y = await getAllCountries();
+  console.log('🚀 ~ file: index.tsx ~ line 89 ~ getStaticProps ~ y', y);
 
   return {
     props: { upcommingEvents, previousEvents },
