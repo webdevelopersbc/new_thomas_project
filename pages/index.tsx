@@ -1,5 +1,5 @@
 import React from 'react';
-import { NextPage } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import { ParallaxProps } from 'react-parallax';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -73,7 +73,7 @@ const Home: NextPage<HomePageProps> = ({ upcommingEvents, previousEvents }) => {
 
 export default Home;
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const upcommingEventsPromise = getEvents(QUERY_UPCOMING_EVENTS);
   const previousEventsPromise = getEvents(QUERY_PREVIOUS_EVENTS);
 
@@ -82,13 +82,7 @@ export async function getStaticProps() {
     previousEventsPromise,
   ]);
 
-  var x = await getAllEvents();
-  console.log('🚀 ~ file: index.tsx ~ line 86 ~ getStaticProps ~ x', x);
-
-  var y = await getAllCountries();
-  console.log('🚀 ~ file: index.tsx ~ line 89 ~ getStaticProps ~ y', y);
-
   return {
     props: { upcommingEvents, previousEvents },
   };
-}
+};

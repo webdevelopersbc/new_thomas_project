@@ -9,3 +9,7 @@ export * from './create-upcoming-events-query';
 export * from './create-custom-range-events-query';
 export * from './random-bool';
 export * from './to-title-case';
+export * from './get-sessions-for-speakers';
+export * from './get-speaker-from-speakers';
+export * from './get-speaker-sessions';
+export * from './nl2br';

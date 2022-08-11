@@ -27,7 +27,7 @@ export type HeroTileProps = {
     hashtag: string;
   };
   compact?: boolean;
-  showDetails: boolean;
+  showDetails?: boolean;
 };
 
 export const HeroTile: FunctionComponent<HeroTileProps> = ({
