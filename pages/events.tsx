@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { NextPage } from 'next';
-import  Typewriter  from 'typewriter-effect';
+import { useTypewriter, Cursor } from 'react-simple-typewriter';
 import { PageLayout, EventCard, AppButton } from '@components';
 import { Checkbox, Dropdown, Transition } from 'semantic-ui-react';
 import {
@@ -19,7 +19,6 @@ import {
   PREVIOUS_EVENTS,
   UPCOMING_EVENTS,
 } from '@constants';
-import { string } from 'yup';
 
 const Flatpickr = dynamic(() => import('react-flatpickr'), { ssr: false });
 
@@ -47,9 +46,11 @@ const Events: NextPage = () => {
   const [registrationOpenFilter, setRegistrationOpenFilter] =
     useState<boolean>(false);
 
-
-    //almost like different pages, the background keeps changing.
-    //
+  const { text: typewriter } = useTypewriter({
+    words: ['Conferences', 'Bootcamps', 'Community Events'],
+    loop: false,
+    delaySpeed: 2500,
+  });
 
   useEffect(() => {
     fetchAndSetEvent();
@@ -92,32 +93,30 @@ const Events: NextPage = () => {
     const sorted = sort(response, 'start_date', sortDirection);
     setEvents(sorted);
 
-    const countries = [...new Set(sorted.map((s, i) => { 
-      return {
-        key: i,
-        text: s.country,
-        value: s.country
-      } 
-    }))];
+    const countries = [
+      ...new Set(
+        sorted.map((s, i) => {
+          return {
+            key: i,
+            text: s.country,
+            value: s.country,
+          };
+        })
+      ),
+    ];
 
     setCountryOptions(countries);
-    console.log('🚀 ~ file: events.tsx ~ line 90 ~ fetchAndSetEvent ~ countries', countries);
   };
 
   const filterEvents = (eventsInput: any[]) => {
     const filtered = eventsInput.filter((event) => {
       event.display = true;
       //display = true; // default to show the event
-      
-      
+
       if (countries.length >= 1) {
-       console.log(event);
         const countrySelected = countries.find((c) => c === event.country);
-        console.log('🚀 ~ file: events.tsx ~ line 111 ~ filtered ~ countrySelected', countrySelected);
         if (!countrySelected) event.display = false;
-        console.log('🚀 ~ file: events.tsx ~ line 113 ~ filtered ~ !countrySelected', !countrySelected);
       }
-      console.log('🚀 ~ file: events.tsx ~ line 106 ~ filtered ~ display', event.display);
 
       if (registrationOpenFilter) {
         const registrationActive = datesActive(
@@ -179,18 +178,8 @@ const Events: NextPage = () => {
         <div className="font-body text-6xl font-extrabold pt-48 pb-16 text-white">
           <span>Discover </span>
           <span className="text-pink inline-block">
-            <Typewriter
-            options={{
-              wrapperClassName: "inline-block"
-            }}
-            onInit={(typewriter) => {
-              typewriter
-              .typeString('Conferences').pauseFor(2500).deleteAll()
-              .typeString('Bootcamps').pauseFor(2500).deleteAll()
-              .typeString('Community Events')
-              .start();
-            }}
-            />
+            {typewriter}
+            <Cursor cursorStyle="|" />
           </span>
           <div className="mt-2">happening across the world.</div>
         </div>
