@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { NextPage } from 'next';
-import { Typewriter } from 'react-simple-typewriter';
+import  Typewriter  from 'typewriter-effect';
 import { PageLayout, EventCard, AppButton } from '@components';
 import { Checkbox, Dropdown, Transition } from 'semantic-ui-react';
 import {
@@ -178,11 +178,18 @@ const Events: NextPage = () => {
       <div className="mb-10 mt-12">
         <div className="font-body text-6xl font-extrabold pt-48 pb-16 text-white">
           <span>Discover </span>
-          <span className="text-pink">
+          <span className="text-pink inline-block">
             <Typewriter
-              cursor
-              cursorStyle="|"
-              words={['Conferences', 'Bootcamps', 'Community Events']}
+            options={{
+              wrapperClassName: "inline-block"
+            }}
+            onInit={(typewriter) => {
+              typewriter
+              .typeString('Conferences').pauseFor(2500).deleteAll()
+              .typeString('Bootcamps').pauseFor(2500).deleteAll()
+              .typeString('Community Events')
+              .start();
+            }}
             />
           </span>
           <div className="mt-2">happening across the world.</div>
