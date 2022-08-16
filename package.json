@@ -8,9 +8,10 @@
   "scripts": {
     "dev": "next dev -p 4280",
     "build": "next build",
-    "start": "next start -p 4280",
+    "start": "next start -p $PORT",
     "lint": "next lint",
-    "analyze": "ANALYZE=true next build"
+    "analyze": "ANALYZE=true next build",
+    "postinstall": "next build"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.2",
