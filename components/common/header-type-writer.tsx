@@ -1,13 +1,8 @@
-import { FunctionComponent } from 'react';
 import { useTypewriter, Cursor } from 'react-simple-typewriter';
 
-export type TypeWriterProps = {
-  words: string[];
-};
-
-export const TypeWriter: FunctionComponent<TypeWriterProps> = ({ words }) => {
+export const HeaderTypeWriter = () => {
   const { text: typewriter } = useTypewriter({
-    words,
+    words: ['Conferences', 'Bootcamps', 'Community Events'],
     loop: false,
     delaySpeed: 2500,
   });

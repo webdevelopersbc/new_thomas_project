@@ -14,7 +14,7 @@ export const Navigation = () => {
           Home
         </a>
       </Link>
-      <Link href="/events">
+      <Link href="/events?when=upcomming">
         <a className="mx-2 xl:mx-3 hidden lg:inline-flex px-1 xl:px-2 !text-white border-solid border-0 border-transparent border-b-4 hover:border-b-4 hover:border-pink">
           Events
         </a>
