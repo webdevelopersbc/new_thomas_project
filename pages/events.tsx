@@ -1,186 +1,159 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import { NextPage } from 'next';
-import { useTypewriter, Cursor } from 'react-simple-typewriter';
-import { PageLayout, EventCard, AppButton } from '@components';
-import { Checkbox, Dropdown, Transition } from 'semantic-ui-react';
+import { GetServerSideProps, NextPage } from 'next';
+import {
+  Checkbox,
+  CheckboxProps,
+  Dropdown,
+  DropdownProps,
+  Transition,
+} from 'semantic-ui-react';
+import { DateTime } from 'luxon';
 import {
   createCustomRangeEventsQuery,
+  createPreviousEventsQuery,
+  createUpcomingEventsQuery,
   datesActive,
   randomBool,
   sort,
 } from '@utils';
-import { DateTime } from 'luxon';
 import { getEvents } from '@services';
+import { PageLayout, EventCard, AppButton, TypeWriter } from '@components';
 import {
-  QUERY_PREVIOUS_EVENTS,
-  QUERY_UPCOMING_EVENTS,
-  CUSTOM_RANGE,
-  PREVIOUS_EVENTS,
-  UPCOMING_EVENTS,
+  COUNTRY_LIST,
+  EVENT_FILTER_OPTIONS,
+  EVENT_FILTER_TYPE,
 } from '@constants';
 
 const Flatpickr = dynamic(() => import('react-flatpickr'), { ssr: false });
 
-// TODO show no events when there is nothing available from filters
-const Events: NextPage = () => {
-  const past =
-    typeof window !== 'undefined'
-      ? new URLSearchParams(window.location.search).has('past')
-      : false;
-  const [when, setWhen] = useState<string>(
-    past ? PREVIOUS_EVENTS : UPCOMING_EVENTS
-  );
-  const [dateRange, setDateRange] = useState([
-    DateTime.now().toJSDate(),
-    DateTime.now().plus({ weeks: 1 }).toJSDate(),
-  ]);
-  const [countries, setCountriesValue] = useState([]);
-  const [countryOptions, setCountryOptions] = useState<any[]>([]);
-  const [events, setEvents] = useState<any[]>([]);
-  const [filteredEvents, setFilteredEvents] = useState<any[]>();
-  const [callForSpeakersFilter, setCallForSpeakersFilter] =
-    useState<boolean>(false);
-  const [callForSponsorsFilter, setCallForSponsorsFilter] =
-    useState<boolean>(false);
-  const [registrationOpenFilter, setRegistrationOpenFilter] =
-    useState<boolean>(false);
+export type EventsProps = {
+  events: any[];
+};
 
-  const { text: typewriter } = useTypewriter({
-    words: ['Conferences', 'Bootcamps', 'Community Events'],
-    loop: false,
-    delaySpeed: 2500,
+const Events: NextPage<EventsProps> = ({ events }) => {
+  const [selectedCountries, setSelectedCountriesValue] = useState<string[]>([]);
+  const [fiterCheckboxes, setFiterCheckboxes] = useState({
+    registrationOpen: false,
+    callForSpeakers: false,
+    callForSponsors: false,
   });
 
-  useEffect(() => {
-    fetchAndSetEvent();
-  }, [when, dateRange]);
+  const { query, isReady, push: routerPush } = useRouter();
 
-  useEffect(() => {
-    filterEvents(events);
-  }, [
-    events,
-    countries,
-    registrationOpenFilter,
-    callForSpeakersFilter,
-    callForSponsorsFilter,
-  ]);
+  const handleUpdateWhenEvent = (when: string) => {
+    const defaultDateRange = {
+      from: DateTime.now().toISODate(),
+      to: DateTime.now().plus({ weeks: 1 }).toISODate(),
+    };
 
-  const fetchAndSetEvent = async () => {
-    let filter = '';
-    let sortDirection: 'asc' | 'desc' = 'asc';
+    if (when === EVENT_FILTER_TYPE.CUSTOM) {
+      routerPush({
+        query: {
+          when,
+          ...defaultDateRange,
+        },
+      });
+    } else {
+      routerPush({
+        query: {
+          when,
+        },
+      });
+    }
+  };
 
-    switch (when) {
-      case UPCOMING_EVENTS:
-        filter = QUERY_UPCOMING_EVENTS;
-        sortDirection = 'asc';
-        break;
-      case PREVIOUS_EVENTS:
-        filter = QUERY_PREVIOUS_EVENTS;
-        sortDirection = 'desc';
-        break;
-      case CUSTOM_RANGE:
-        // TODO this fires twice need to stop it
-        if (dateRange.length <= 1) return; // prevent query when only one range was selected
-        filter = createCustomRangeEventsQuery(dateRange[0], dateRange[1]);
-        sortDirection = 'asc';
-        break;
-      default:
-        console.log('unexpected filter');
+  const handleUpdateCustomRange = (range: Date[]) => {
+    const [from, to] = range;
+
+    routerPush({
+      query: {
+        ...query,
+        from: DateTime.fromJSDate(from).toISODate(),
+        to: DateTime.fromJSDate(to).toISODate(),
+      },
+    });
+  };
+
+  const getDefaultSelectedDateRange = () => {
+    const from = query.from as string;
+    const to = query.to as string;
+
+    if (from && to) {
+      return [
+        DateTime.fromISO(from).toJSDate(),
+        DateTime.fromISO(to).toJSDate(),
+      ];
     }
 
-    const response = await getEvents(filter);
-    const sorted = sort(response, 'start_date', sortDirection);
-    setEvents(sorted);
-
-    const countries = [
-      ...new Set(
-        sorted.map((s, i) => {
-          return {
-            key: i,
-            text: s.country,
-            value: s.country,
-          };
-        })
-      ),
+    return [
+      DateTime.now().toJSDate(),
+      DateTime.now().plus({ weeks: 1 }).toJSDate(),
     ];
-
-    setCountryOptions(countries);
   };
 
-  const filterEvents = (eventsInput: any[]) => {
-    const filtered = eventsInput.filter((event) => {
-      event.display = true;
-      //display = true; // default to show the event
+  const whenFilter = isReady
+    ? query.when || EVENT_FILTER_TYPE.UPCOMING
+    : EVENT_FILTER_TYPE.UPCOMING;
 
-      if (countries.length >= 1) {
-        const countrySelected = countries.find((c) => c === event.country);
-        if (!countrySelected) event.display = false;
-      }
-
-      if (registrationOpenFilter) {
-        const registrationActive = datesActive(
-          event.registration_start_date,
-          event.registration_end_date
-        );
-        if (event.display && !registrationActive) event.display = false;
-      }
-
-      if (callForSpeakersFilter) {
-        const callForSpeakersActive = datesActive(
-          event.speaker_call_start_date,
-          event.speaker_call_end_date
-        );
-        if (event.display && !callForSpeakersActive) event.display = false;
-      }
-
-      if (callForSponsorsFilter) {
-        const callForSponsorsActive = datesActive(
-          event.sponsor_call_start_date,
-          event.sponsor_call_end_date
-        );
-        if (event.display && !callForSponsorsActive) event.display = false;
-      }
-
-      return event;
-    });
-
-    console.log(filtered);
-    setFilteredEvents(filtered);
-  };
-
-  const updateCountries = async (_event: any, data: any) => {
-    console.log(data.value);
-    setCountriesValue(data.value);
-  };
-
-  const whenOptions = [
-    {
-      key: 0,
-      text: UPCOMING_EVENTS,
-      value: UPCOMING_EVENTS,
-    },
-    {
-      key: 1,
-      text: PREVIOUS_EVENTS,
-      value: PREVIOUS_EVENTS,
-    },
-    {
-      key: 2,
-      text: CUSTOM_RANGE,
-      value: CUSTOM_RANGE,
-    },
+  const countrySelections = [
+    ...new Set(
+      events.map((event, index) => {
+        return {
+          key: index,
+          text: COUNTRY_LIST[event.country.toLowerCase()],
+          value: event.country,
+        };
+      })
+    ),
   ];
+
+  const filteredEvents = events.filter((event) => {
+    event.display = true;
+
+    if (selectedCountries.length >= 1) {
+      const countrySelected = selectedCountries.find(
+        (c) => c === event.country
+      );
+      if (!countrySelected) event.display = false;
+    }
+
+    if (fiterCheckboxes.registrationOpen) {
+      const registrationActive = datesActive(
+        event.registration_start_date,
+        event.registration_end_date
+      );
+      if (event.display && !registrationActive) event.display = false;
+    }
+
+    if (fiterCheckboxes.callForSpeakers) {
+      const callForSpeakersActive = datesActive(
+        event.speaker_call_start_date,
+        event.speaker_call_end_date
+      );
+      if (event.display && !callForSpeakersActive) event.display = false;
+    }
+
+    if (fiterCheckboxes.callForSponsors) {
+      const callForSponsorsActive = datesActive(
+        event.sponsor_call_start_date,
+        event.sponsor_call_end_date
+      );
+      if (event.display && !callForSponsorsActive) event.display = false;
+    }
+
+    return event;
+  });
 
   return (
     <PageLayout bgImage title="">
       <div className="mb-10 mt-12">
         <div className="font-body text-6xl font-extrabold pt-48 pb-16 text-white">
-          <span>Discover </span>
-          <span className="text-pink inline-block">
-            {typewriter}
-            <Cursor cursorStyle="|" />
-          </span>
+          <span className="pr-4">Discover</span>
+          <TypeWriter
+            words={['Conferences', 'Bootcamps', 'Community Events']}
+          />
           <div className="mt-2">happening across the world.</div>
         </div>
         <div className="bg-white rounded-md my-6 py-12 px-10">
@@ -193,16 +166,16 @@ const Events: NextPage = () => {
                 <Dropdown
                   placeholder="Timespan"
                   selection
-                  value={when}
-                  options={whenOptions}
+                  value={whenFilter}
+                  options={EVENT_FILTER_OPTIONS}
                   onChange={(_event, data) => {
-                    setWhen(data.value as string);
+                    handleUpdateWhenEvent(data.value as string);
                   }}
                 />
               </div>
             </div>
             <Transition
-              visible={when === CUSTOM_RANGE}
+              visible={whenFilter === EVENT_FILTER_TYPE.CUSTOM}
               animation="fade"
               duration={500}
             >
@@ -212,12 +185,12 @@ const Events: NextPage = () => {
                 </div>
                 <div>
                   <Flatpickr
-                    value={dateRange}
+                    value={getDefaultSelectedDateRange()}
                     options={{
                       dateFormat: 'M j, Y',
                       mode: 'range',
                     }}
-                    onClose={(range) => setDateRange(range)}
+                    onClose={handleUpdateCustomRange}
                     multiple
                   />
                 </div>
@@ -233,8 +206,11 @@ const Events: NextPage = () => {
                   selection
                   clearable
                   multiple
-                  onChange={updateCountries}
-                  options={countryOptions}
+                  onChange={(
+                    _event: React.SyntheticEvent<HTMLElement>,
+                    data: DropdownProps
+                  ) => setSelectedCountriesValue(data.value as string[])}
+                  options={countrySelections}
                 />
               </div>
             </div>
@@ -246,22 +222,43 @@ const Events: NextPage = () => {
                 <Checkbox
                   label="Registration Open"
                   className="mr-5"
-                  onChange={(_e, data) =>
-                    setRegistrationOpenFilter(Boolean(data.checked))
+                  name="registrationOpen"
+                  onChange={(
+                    _event: React.FormEvent<HTMLInputElement>,
+                    data: CheckboxProps
+                  ) =>
+                    setFiterCheckboxes({
+                      ...fiterCheckboxes,
+                      [data.name as string]: Boolean(data.checked),
+                    })
                   }
                 />
                 <Checkbox
                   label="Call for Speakers"
                   className="mr-5"
-                  onChange={(_e, data) =>
-                    setCallForSpeakersFilter(Boolean(data.checked))
+                  name="callForSponsors"
+                  onChange={(
+                    _event: React.FormEvent<HTMLInputElement>,
+                    data: CheckboxProps
+                  ) =>
+                    setFiterCheckboxes({
+                      ...fiterCheckboxes,
+                      [data.name as string]: Boolean(data.checked),
+                    })
                   }
                 />
                 <Checkbox
                   label="Call for Sponsors"
                   className="mr-5"
-                  onChange={(_e, data) =>
-                    setCallForSponsorsFilter(Boolean(data.checked))
+                  name="callForSponsors"
+                  onChange={(
+                    _event: React.FormEvent<HTMLInputElement>,
+                    data: CheckboxProps
+                  ) =>
+                    setFiterCheckboxes({
+                      ...fiterCheckboxes,
+                      [data.name as string]: Boolean(data.checked),
+                    })
                   }
                 />
               </div>
@@ -272,7 +269,7 @@ const Events: NextPage = () => {
           </div>
         </div>
         <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 -mx-4">
-          {filteredEvents &&
+          {filteredEvents?.length &&
             filteredEvents.map((event) => (
               <Transition
                 visible={event.display}
@@ -283,6 +280,7 @@ const Events: NextPage = () => {
                 <EventCard {...event} />
               </Transition>
             ))}
+          {!filteredEvents?.length && <h3>No event found</h3>}
         </div>
       </div>
     </PageLayout>
@@ -290,3 +288,38 @@ const Events: NextPage = () => {
 };
 
 export default Events;
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const when = query?.when;
+  const from = query?.from;
+  const to = query?.to;
+
+  let filter = '';
+  let sortDirection: 'asc' | 'desc' = 'asc';
+
+  switch (when) {
+    case EVENT_FILTER_TYPE.UPCOMING:
+      filter = createUpcomingEventsQuery();
+      break;
+    case EVENT_FILTER_TYPE.PREVIOUS:
+      filter = createPreviousEventsQuery();
+      sortDirection = 'desc';
+      break;
+    case EVENT_FILTER_TYPE.CUSTOM:
+      if (from && to) {
+        filter = createCustomRangeEventsQuery(from as string, to as string);
+        break;
+      }
+      break;
+    default:
+      break;
+  }
+
+  const events = await getEvents(filter);
+
+  const sortedEvents = sort(events, 'start_date', sortDirection);
+
+  return {
+    props: { events: sortedEvents },
+  };
+};

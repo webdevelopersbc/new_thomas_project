@@ -5,7 +5,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
   eslint: {
     ignoreDuringBuilds: true, // IMPORTANT!!! REMOVE WHEN STABLE

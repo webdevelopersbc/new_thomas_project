@@ -1,8 +1,4 @@
-import { DateTime } from 'luxon';
-
-export const createCustomRangeEventsQuery = (start: Date, end: Date) => {
-  const begin = DateTime.fromJSDate(start).toISODate();
-  const finish = DateTime.fromJSDate(end).toISODate();
-  const customRangeEventsQuery = `(start_date ge '${begin}') and (end_date lt '${finish}') and (status eq 'published')`;
+export const createCustomRangeEventsQuery = (from: string, to: string) => {
+  const customRangeEventsQuery = `(start_date ge '${from}') and (end_date lt '${to}') and (status eq 'published')`;
   return customRangeEventsQuery;
 };

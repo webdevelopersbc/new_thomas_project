@@ -9,9 +9,9 @@ import {
   UpcomingEvents,
   PreviousEvents,
 } from '@components';
-import { getAllCountries, getAllEvents, getEvents } from '@services';
-import { QUERY_PREVIOUS_EVENTS, QUERY_UPCOMING_EVENTS } from '@constants';
+import { getEvents } from '@services';
 import { useRouter } from 'next/router';
+import { createPreviousEventsQuery, createUpcomingEventsQuery } from '@utils';
 
 const Parallax = dynamic<ParallaxProps>(
   () => import('react-parallax').then((module) => module.Parallax),
@@ -74,8 +74,8 @@ const Home: NextPage<HomePageProps> = ({ upcommingEvents, previousEvents }) => {
 export default Home;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const upcommingEventsPromise = getEvents(QUERY_UPCOMING_EVENTS);
-  const previousEventsPromise = getEvents(QUERY_PREVIOUS_EVENTS);
+  const upcommingEventsPromise = getEvents(createUpcomingEventsQuery());
+  const previousEventsPromise = getEvents(createPreviousEventsQuery());
 
   const [upcommingEvents, previousEvents] = await Promise.all([
     upcommingEventsPromise,

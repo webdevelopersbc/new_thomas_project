@@ -1,6 +1,23 @@
-export const UPCOMING_EVENTS = 'Upcoming Events';
-export const PREVIOUS_EVENTS = 'Previous Events';
-export const CUSTOM_RANGE = 'Custom Range';
+export const EVENT_FILTER_TYPE = {
+  UPCOMING: 'upcomming',
+  PREVIOUS: 'previous',
+  CUSTOM: 'custom'
+}
+
+export const EVENT_FILTER_OPTIONS = [
+  {
+    value: EVENT_FILTER_TYPE.UPCOMING,
+    text: 'Upcoming Events',
+  },
+  {
+    value: EVENT_FILTER_TYPE.PREVIOUS,
+    text: 'Previous Events',
+  },
+  {
+    value: EVENT_FILTER_TYPE.CUSTOM,
+    text: 'Custom Range',
+  },
+];
 
 export const EVENT_TYPES = [
   {
