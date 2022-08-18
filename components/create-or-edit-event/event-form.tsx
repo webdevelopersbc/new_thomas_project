@@ -22,7 +22,12 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Form } from 'semantic-ui-react';
-import { uploadBlob, upsertEvent, getEvent } from '@services';
+import {
+  uploadBlob,
+  upsertEvent,
+  getEvent,
+  rebuildDetailPage,
+} from '@services';
 import {
   BANNER_IMAGE,
   BANNER_IMAGE_ATTRIBUTION_LINK,
@@ -69,7 +74,6 @@ export type FormInputs = {
   postal_code: string;
   location: string;
   country: string;
-  address2: string;
   address2: string;
   longitude: number;
   latitude: number;
@@ -297,8 +301,10 @@ export const EventForm: FunctionComponent<EventFormProps> = ({ eventId }) => {
     setCurrentStep(currentStep - 1);
   };
 
-  const onSubmit = async (formData: FormInputs, e: BaseSyntheticEvent) => {
-    const direction = e.target[0].innerText.toLowerCase();
+  const onSubmit = async (formData: FormInputs, event?: BaseSyntheticEvent) => {
+    const _eventId = eventId || uuidv4();
+
+    const direction = event!.target[0].innerText.toLowerCase();
     if (direction === 'previous') previousStep();
     if (direction === 'next') nextStep();
 
@@ -307,7 +313,7 @@ export const EventForm: FunctionComponent<EventFormProps> = ({ eventId }) => {
     const container = 'events';
     const folder = `${DateTime.fromJSDate(formData[START_DATE]).toFormat(
       'yyyy'
-    )}/${eventId || uuidv4()}`;
+    )}/${_eventId}`;
 
     const [uploadedBannerImage, uploadedPreviewImage, sponsorProspectusImage] =
       getValues<any>([BANNER_IMAGE, PREVIEW_IMAGE, SPONSOR_PROSPECTUS]);
@@ -339,9 +345,11 @@ export const EventForm: FunctionComponent<EventFormProps> = ({ eventId }) => {
 
     const createEventResult = await upsertEvent(
       HARD_CODE_CLIENT_ID,
-      eventId,
+      _eventId,
       formData
     );
+
+    rebuildDetailPage(formData.start_date, formData.title);
 
     if (createEventResult) setEventCreatedModalOpen(true);
 
