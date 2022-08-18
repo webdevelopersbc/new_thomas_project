@@ -158,12 +158,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const allEvents = await getAllEvents();
 
   const paths = allEvents.map((event: any) => {
-    const { start_date, title } = event;
-    const startDate = DateTime.fromISO(start_date).toFormat('yyyy-MM-dd');
+    const startDate = DateTime.fromISO(event.start_date).toFormat('yyyy-MM-dd');
 
     return {
       params: {
-        slug: [startDate, title],
+        slug: [startDate, event.title],
       },
     };
   });

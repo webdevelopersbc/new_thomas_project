@@ -12,4 +12,4 @@ export * from './hero-tile';
 export * from './event-card';
 export * from './event-slider';
 export * from './loader';
-export * from './header-type-writer';
+export * from './type-writer';

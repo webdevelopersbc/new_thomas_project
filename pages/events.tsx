@@ -19,7 +19,7 @@ import {
   sort,
 } from '@utils';
 import { getEvents } from '@services';
-import { PageLayout, EventCard, AppButton, HeaderTypeWriter } from '@components';
+import { PageLayout, EventCard, AppButton, TypeWriter } from '@components';
 import {
   COUNTRY_LIST,
   EVENT_FILTER_OPTIONS,
@@ -151,7 +151,9 @@ const Events: NextPage<EventsProps> = ({ events }) => {
       <div className="mb-10 mt-12">
         <div className="font-body text-6xl font-extrabold pt-48 pb-16 text-white">
           <span className="pr-4">Discover</span>
-          <HeaderTypeWriter />
+          <TypeWriter
+            words={['Conferences', 'Bootcamps', 'Community Events']}
+          />
           <div className="mt-2">happening across the world.</div>
         </div>
         <div className="bg-white rounded-md my-6 py-12 px-10">
@@ -288,7 +290,7 @@ const Events: NextPage<EventsProps> = ({ events }) => {
 export default Events;
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const when = query?.when || EVENT_FILTER_TYPE.UPCOMING;
+  const when = query?.when;
   const from = query?.from;
   const to = query?.to;
 

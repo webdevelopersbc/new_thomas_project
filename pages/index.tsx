@@ -12,7 +12,9 @@ import {
 import { getEvents } from '@services';
 import { useRouter } from 'next/router';
 import { createPreviousEventsQuery, createUpcomingEventsQuery } from '@utils';
-
+import Head from 'next/head';
+//  import css
+import styles from '../styles/Home.module.css';
 const Parallax = dynamic<ParallaxProps>(
   () => import('react-parallax').then((module) => module.Parallax),
   { ssr: false }
@@ -26,6 +28,17 @@ export type HomePageProps = {
 const Home: NextPage<HomePageProps> = ({ upcommingEvents, previousEvents }) => {
   const router = useRouter();
   return (
+    <>
+    {/* use head and add meta tag in head component  */}
+      <Head>
+        <title>Home App</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com"  />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" 
+          rel="stylesheet"
+        />
+      </Head>
     <Parallax
       bgImage="https://demo2wpopal.b-cdn.net/spker/wp-content/uploads/2019/07/bg1.svg"
       bgImageAlt="m365 is a global technology"
@@ -35,7 +48,7 @@ const Home: NextPage<HomePageProps> = ({ upcommingEvents, previousEvents }) => {
       <div className="my-16">
         <UpcomingEvents events={upcommingEvents} />
       </div>
-      <div className="grid grid-cols-1 my-2 mx-6 gap-6 md:grid-cols-2 md:gap -6 md:mx-6 md:my-2 lg:gap-12 lg:mx-12 lg:my-4">
+      <div className="grid grid-cols-1 my-2 mx-6 gap-6 md:grid-cols-2 md:gap -6 md:mx-6 md:my-2 lg:gap-12 lg:mx-12 lg:my-4 ">
         <div className="bg-[#f4f4f4] rounded-lg py-8 px-10">
           <div className="text-black mb-8 font-dm-sans text-2xl opacity-90">
             What are m365 Events?
@@ -68,6 +81,7 @@ const Home: NextPage<HomePageProps> = ({ upcommingEvents, previousEvents }) => {
         <PreviousEvents events={previousEvents} />
       </div>
     </Parallax>
+    </>
   );
 };
 

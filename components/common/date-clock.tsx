@@ -9,7 +9,7 @@ export const DateClock = () => {
   }, []);
 
   return (
-    <span className="content-start whitespace-nowrap">
+    <span className="content-start whitespace-nowrap for-h" >
       <FontAwesomeIcon icon={faCalendar} className="pr-2" />
       {dateState.toLocaleDateString('en-US', {
         day: 'numeric',

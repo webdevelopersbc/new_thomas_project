@@ -13,7 +13,7 @@ export const EventSliderArrow: FunctionComponent<EventSliderArrowProps> = ({
     <svg
       onClick={onClick}
       className={clsx(
-        'w-20 h-20 absolute z-10 -top-5 fill-red-400 cursor-pointer',
+        'w-20 h-20 absolute tttt z-10 -top-5 fill-red-400 cursor-pointer',
         {
           'right-40': left,
           'right-1': !left,

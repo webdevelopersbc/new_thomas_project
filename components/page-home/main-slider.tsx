@@ -6,6 +6,7 @@ import { HeroTile, SliderArrow } from '@components';
 
 import 'keen-slider/keen-slider.min.css';
 
+
 export type MainSliderProps = {
   events: any[];
 };
@@ -31,7 +32,7 @@ export const MainSlider: FunctionComponent<MainSliderProps> = ({ events }) => {
 
   return (
     <div className="relative">
-      <div ref={sliderRef} className="keen-slider">
+      <div ref={sliderRef} className="keen-slider for-heigth">
         {randomizedEvents.map((event: any) => (
           <div className="keen-slider__slide" key={event.RowKey}>
             <HeroTile event={event} showDetails />
@@ -40,7 +41,7 @@ export const MainSlider: FunctionComponent<MainSliderProps> = ({ events }) => {
       </div>
       {loaded && instanceRef.current && (
         <>
-          <SliderArrow
+          <SliderArrow 
             left
             onClick={instanceRef.current?.prev}
           />
@@ -52,7 +53,7 @@ export const MainSlider: FunctionComponent<MainSliderProps> = ({ events }) => {
         </>
       )}
       {loaded && instanceRef.current && (
-        <div className="flex absolute bottom-8 left-1/2 -translate-x-1/2 justify-center">
+        <div className="flex absolute bottom-8 left-1/2 -translate-x-1/2 justify-center  ">
           {randomizedEvents.map((event, idx) => (
             <button
               type="button"
