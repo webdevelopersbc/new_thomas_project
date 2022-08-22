@@ -317,9 +317,9 @@ svg.w-20.h-20.absolute.z-10.top-1\/2.-translate-y-1\/2.fill-white.cursor-pointer
 }
 @media only screen and (max-width: 432px) {
   
-  .keen-slider__slide {
+  /* .keen-slider__slide {
     min-width: 100% !important;
-}
+} */
 .keen-slider__slide {
   padding: 13px;
 }
@@ -353,12 +353,35 @@ svg.svg-inline--fa.fa-calendar.pr-2 , svg.svg-inline--fa.fa-twitter.mb-3.pl-1 {
 
 @media only screen and (min-width: 432px) and (max-width: 768px) {
 
-.keen-slider__slide.slider-upcoming {
+/* .keen-slider__slide.slider-upcoming {
   min-width: 71% !important;
-}
+} */
 .for-padd {
   padding-top: 14px; 
 }
 /* padding-top: 14px; */
+}
 
+@media only screen and (min-width: 433px) and (max-width: 573px) { 
+ 
+  svg.w-20.h-20.absolute.tttt.z-10.-top-5.fill-red-400.cursor-pointer.right-40 {
+    left: -18px;
+    top: 46%;
+}
+svg.w-20.h-20.absolute.tttt.z-10.-top-5.fill-red-400.cursor-pointer.right-1 {
+  top: 46%;
+  left: 88%;
+}
+
+}
+
+@media only screen and (min-width: 574px) and (max-width: 768px) { 
+  svg.w-20.h-20.absolute.tttt.z-10.-top-5.fill-red-400.cursor-pointer.right-40 {
+    left: -18px;
+    top: 51%;
+}
+svg.w-20.h-20.absolute.tttt.z-10.-top-5.fill-red-400.cursor-pointer.right-1 {
+  top: 51%;
+  left: 93%;
+}
 }

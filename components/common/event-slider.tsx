@@ -19,14 +19,37 @@ export const EventSlider: FunctionComponent<EventSliderProps> = ({
     slides: {
       perView: 4,
     },
+    breakpoints: {
+      '(max-width: 432px)': {
+        // loop: false,
+        slides: {
+          perView: 1,
+        },
+      },
+      '(min-width: 433px) and (max-width: 573px)': {
+        // loop: false,
+        slides: {
+          perView: 1.5,
+          spacing : 0,
+        },
+      },
+      '(min-width: 574px) and (max-width: 768px)': {
+        // loop: false,
+        slides: {
+          perView: 3,
+         
+        },
+      },
+
+    },
     created() {
       setLoaded(true);
     },
   });
 
   return (
-    <div className="relative ">
-      <div className="mx-6 lg:mx-12 mb-0 md:mb-6 font-body font-bold text-black text-3xl md:text-5xl lg:text-6xl ">
+    <div className="relative mx-6 lg:mx-9">
+    <div className=" lg:mx-4 mx-2 mb-0 md:mb-6 font-body font-bold text-black text-3xl md:text-5xl lg:text-6xl ">
         {title}
       </div>
       <div ref={sliderRef} className="keen-slider for-padd">
@@ -43,6 +66,7 @@ export const EventSlider: FunctionComponent<EventSliderProps> = ({
             onClick={() => {
               instanceRef.current?.next();
             }}
+            
           />
         </>
       )}
